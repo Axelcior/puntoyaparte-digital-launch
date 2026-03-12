@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useLeadForm } from "./LeadFormContext";
 
 const navLinks = [
   { label: "Servicios", href: "/#servicios" },
@@ -12,6 +13,7 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const { openForm } = useLeadForm();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -71,12 +73,12 @@ const Header = () => {
         </nav>
 
         <div className="flex items-center gap-4">
-          <a
-            href="#contacto"
+          <button
+            onClick={openForm}
             className="hidden md:inline-flex items-center px-6 py-2.5 text-sm font-semibold bg-gold text-background rounded-sm hover:bg-gold-glow transition-colors duration-200 tracking-wide"
           >
             Auditoría Gratuita
-          </a>
+          </button>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden text-ivory p-2"
@@ -123,13 +125,12 @@ const Header = () => {
               </a>
             )
           )}
-          <a
-            href="#contacto"
-            onClick={() => setMenuOpen(false)}
-            className="block text-center px-6 py-2.5 text-sm font-semibold bg-gold text-background rounded-sm"
+          <button
+            onClick={() => { setMenuOpen(false); openForm(); }}
+            className="block w-full text-center px-6 py-2.5 text-sm font-semibold bg-gold text-background rounded-sm"
           >
             Auditoría Gratuita
-          </a>
+          </button>
         </div>
       )}
     </header>

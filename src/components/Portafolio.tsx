@@ -1,26 +1,26 @@
 const cases = [
   {
     name: "Bendita Selva",
-    type: "E-commerce ropa interior",
+    type: "E-commerce optimizado para conversión",
     challenge: "Tienda sin estructura clara y sin tracking. La inversión en pauta no se podía medir.",
     intervention: "Rediseño completo en Shopify con embudo optimizado, checkout sin fricción y pixel de Meta configurado.",
-    result: "ROAS 3.5 en los primeros 60 días de pauta.",
+    result: "Tras el lanzamiento de la nueva página y la campaña en Meta Ads, lograron un ROAS de 3.5, crecimiento sostenido en ventas y mayor rotación de productos.",
     highlight: "ROAS 3.5",
   },
   {
     name: "Haz Eco Shop",
-    type: "Economía circular",
+    type: "Economía circular con impacto",
     challenge: "Marca con propósito pero sin presencia digital profesional. No captaba clientes online.",
     intervention: "Landing page con storytelling de marca, catálogo visual y formulario de contacto optimizado.",
-    result: "Primeras ventas online en la primera semana de lanzamiento.",
+    result: "Un espacio digital moderno que visibiliza iniciativas locales y convierte la sostenibilidad en una experiencia accesible y con propósito.",
     highlight: null,
   },
   {
-    name: "Ornitología Neotropical / NOS",
-    type: "Institución científica",
+    name: "NOS – Ornitología Neotropical",
+    type: "Plataforma científica profesional",
     challenge: "Web obsoleta que no reflejaba la autoridad de la institución. Difícil navegación y sin arquitectura.",
     intervention: "Rediseño con estructura informativa clara, secciones de publicaciones y formulario de membresía.",
-    result: "Aumento significativo en solicitudes de membresía y visibilidad internacional.",
+    result: "Plataforma institucional robusta que aumentó la visibilidad, mejoró la conversión a membresías y consolidó su posición como referente académico en la ornitología neotropical.",
     highlight: null,
   },
 ];
