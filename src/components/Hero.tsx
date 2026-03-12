@@ -5,22 +5,21 @@ const bullets = ["Claridad", "Confianza", "Conversión", "Listo para pauta"];
 const chips = ["Optimizado", "Medible", "Listo para escalar"];
 
 const Hero = () => {
-  const { openForm } = useLeadForm();
+  const { openAuditForm, openCommercialForm } = useLeadForm();
 
   return (
-    <section className="section-dark min-h-screen flex items-center pt-20 md:pt-0">
+    <section id="hero" className="section-dark min-h-screen flex items-center pt-20 md:pt-0 scroll-mt-24">
       <div className="container-section py-16 md:py-24">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="animate-fade-up">
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-ivory mb-6">
-              Tu web no está para verse bonita.{" "}
-              <span className="text-gold italic">Está para vender.</span>
+              Diseño web estratégico para negocios que necesitan vender online.
             </h1>
             <p className="text-lg md:text-xl text-foreground/70 mb-3 max-w-xl leading-relaxed">
-              Somos el punto de quiebre: cerramos la improvisación y abrimos estructura digital que convierte visitas en clientes.
+              Creamos landing pages, e-commerce Shopify y estructuras digitales diseñadas para convertir visitas en clientes.
             </p>
             <p className="text-sm text-foreground/50 mb-8 max-w-xl leading-relaxed">
-              Creamos páginas diseñadas para generar ventas reales, optimizadas para campañas de Meta Ads y construidas con procesos claros, tiempos definidos y resultados comprobados.
+              Tu web no debería ser solo una presentación. Debe ser una herramienta que genere clientes todos los días.
             </p>
             <div className="grid grid-cols-2 gap-3 mb-10">
               {bullets.map((b) => (
@@ -32,13 +31,13 @@ const Hero = () => {
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <button
-                onClick={openForm}
+                onClick={() => openCommercialForm()}
                 className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-semibold bg-gold text-background rounded-sm hover:bg-gold-glow transition-colors duration-200 tracking-wide"
               >
                 Agendar llamada estratégica (15 min)
               </button>
               <button
-                onClick={openForm}
+                onClick={() => openAuditForm()}
                 className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-semibold border border-gold/40 text-gold rounded-sm hover:bg-gold/10 transition-colors duration-200 tracking-wide"
               >
                 Pedir auditoría gratuita

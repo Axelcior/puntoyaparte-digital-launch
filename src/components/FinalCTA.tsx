@@ -1,7 +1,7 @@
 import { useLeadForm } from "./LeadFormContext";
 
 const FinalCTA = () => {
-  const { openForm } = useLeadForm();
+  const { openAuditForm, openCommercialForm } = useLeadForm();
 
   return (
     <section className="section-ivory py-20 md:py-28 border-t" style={{ borderColor: "hsl(var(--ivory-foreground) / 0.1)" }}>
@@ -22,13 +22,13 @@ const FinalCTA = () => {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
           <button
-            onClick={openForm}
+            onClick={() => openCommercialForm()}
             className="inline-flex items-center justify-center px-10 py-4 text-sm font-semibold bg-gold text-background rounded-sm hover:bg-gold-glow transition-colors duration-200 tracking-wide"
           >
             Agendar Llamada Estratégica
           </button>
           <button
-            onClick={openForm}
+            onClick={() => openAuditForm()}
             className="inline-flex items-center justify-center px-10 py-4 text-sm font-semibold border rounded-sm transition-colors duration-200 tracking-wide"
             style={{ borderColor: "hsl(var(--gold))", color: "hsl(var(--gold))" }}
           >

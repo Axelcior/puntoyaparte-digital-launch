@@ -1,27 +1,39 @@
 import { Check, Search, LayoutGrid, Code, Rocket, Zap, ShoppingCart, TrendingUp } from "lucide-react";
 import { useLeadForm } from "./LeadFormContext";
+import type { ProjectType } from "./LeadFormContext";
 
 /* ── Servicios ── */
 const services = [
   {
-    title: "Landing Pages de Alto Rendimiento",
-    desc: "Páginas diseñadas para convertir. Ideales para lanzamientos, campañas y captación de leads.",
-    bullets: ["Estructura de persuasión", "Optimizada para móvil", "Tracking completo", "Lista para pauta"],
+    title: "Diseño web profesional para landing pages",
+    desc: "Landing pages estratégicas para campañas, captación de leads y ventas con foco en conversión.",
+    bullets: ["Arquitectura persuasiva", "Optimización móvil", "Tracking completo", "Lista para pauta"],
   },
   {
-    title: "E-commerce Shopify",
-    desc: "Tiendas online profesionales con checkout optimizado y experiencia de compra sin fricción.",
+    title: "Desarrollo de e-commerce en Shopify",
+    desc: "Tiendas online escalables con checkout optimizado, catálogo organizado y experiencia de compra fluida.",
     bullets: ["Catálogo organizado", "Checkout optimizado", "Pasarelas de pago", "Analítica integrada"],
   },
   {
-    title: "Funnels y Optimización de Conversión",
-    desc: "Embudos estratégicos que guían a tu visitante desde el interés hasta la compra.",
+    title: "Optimización de conversión y funnels",
+    desc: "Embudos que conectan tráfico, oferta y seguimiento para convertir visitantes en clientes.",
     bullets: ["Embudo personalizado", "Email automation", "A/B testing", "Reportes de rendimiento"],
   },
 ];
 
 /* ── Planes ── */
-const plans = [
+const plans: Array<{
+  icon: typeof Zap;
+  name: string;
+  subtitle: string;
+  price: string;
+  currency: string;
+  featured: boolean;
+  timeline: string;
+  result: string;
+  formValue: ProjectType;
+  extras: string[];
+}> = [
   {
     icon: Zap,
     name: "Plan Landing Page",
@@ -31,6 +43,7 @@ const plans = [
     featured: false,
     timeline: "Entrega en 7–10 días",
     result: "Página lista para captar leads desde el día uno.",
+    formValue: "Landing Page",
     extras: [
       "Estructura estratégica basada en comportamiento del usuario",
       "Copywriting orientado a conversión",
@@ -48,6 +61,7 @@ const plans = [
     featured: true,
     timeline: "Entrega en 15–20 días",
     result: "Tienda lista para escalar ventas con pauta.",
+    formValue: "E-commerce Shopify",
     extras: [
       "Catálogo completo, variaciones y pasarelas de pago",
       "Arquitectura de conversión para aumentar ticket promedio",
@@ -65,6 +79,7 @@ const plans = [
     featured: false,
     timeline: "Entrega en 20–30 días",
     result: "Sistema completo para convertir tráfico frío en clientes.",
+    formValue: "Funnel de Conversión",
     extras: [
       "Landing + oferta + thank you page",
       "Automatizaciones y secuencias de seguimiento",
@@ -84,17 +99,17 @@ const steps = [
 ];
 
 const ServiciosPlanesSection = () => {
-  const { openForm } = useLeadForm();
+  const { openCommercialForm } = useLeadForm();
 
   return (
-    <section id="servicios" className="section-ivory py-20 md:py-28">
+    <section id="servicios" className="section-ivory py-20 md:py-28 scroll-mt-24">
       <div className="container-section">
         {/* ── Servicios ── */}
         <h2 className="font-serif text-3xl md:text-4xl font-bold text-center mb-4" style={{ color: "hsl(var(--ivory-foreground))" }}>
           Servicios
         </h2>
         <p className="text-center max-w-xl mx-auto mb-14" style={{ color: "hsl(var(--ivory-foreground) / 0.6)" }}>
-          Cada proyecto es diseñado con un objetivo: que tu web trabaje para ti.
+          Diseño web profesional, landing pages y e-commerce Shopify pensados para conversión.
         </p>
         <div className="grid md:grid-cols-3 gap-6 mb-24">
           {services.map((s) => (
@@ -108,7 +123,7 @@ const ServiciosPlanesSection = () => {
                   </li>
                 ))}
               </ul>
-              <button onClick={openForm} className="text-gold text-sm font-semibold hover:underline tracking-wide text-left">
+              <button onClick={() => openCommercialForm()} className="text-gold text-sm font-semibold hover:underline tracking-wide text-left">
                 Consultar →
               </button>
             </div>
@@ -167,7 +182,7 @@ const ServiciosPlanesSection = () => {
                 </div>
 
                 <button
-                  onClick={openForm}
+                  onClick={() => openCommercialForm(plan.formValue)}
                   className={`block text-center py-3 rounded-sm text-sm font-semibold tracking-wide transition-colors duration-200 ${
                     plan.featured
                       ? "bg-gold text-background hover:bg-gold-glow"
