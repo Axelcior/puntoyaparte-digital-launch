@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect, MouseEvent } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLeadForm } from "./LeadFormContext";
 
 const navLinks = [
-  { label: "Servicios", href: "/#servicios" },
+  { label: "Servicios", href: "#servicios" },
   { label: "Portafolio", href: "/portafolio" },
-  { label: "Proceso", href: "/#servicios" },
   { label: "¿Por qué escogernos?", href: "/por-que-escogernos" },
 ];
 
@@ -13,6 +12,7 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { openForm } = useLeadForm();
 
   useEffect(() => {
@@ -21,16 +21,33 @@ const Header = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const scrollToSection = (selector: string) => {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    const headerOffset = 96;
+    const top = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
   const handleNav = (href: string) => {
     setMenuOpen(false);
-    if (href.startsWith("/#")) {
+    if (href.startsWith("#")) {
       if (location.pathname === "/") {
-        const el = document.querySelector(href.replace("/", ""));
-        el?.scrollIntoView({ behavior: "smooth" });
+        scrollToSection(href);
       } else {
-        window.location.href = href;
+        navigate(`/${href}`);
       }
     }
+  };
+
+  const handleLogoClick = (e: MouseEvent) => {
+    if (location.pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setMenuOpen(false);
+      return;
+    }
+    setMenuOpen(false);
   };
 
   return (
@@ -40,13 +57,13 @@ const Header = () => {
       }`}
     >
       <div className="container-section flex items-center justify-between h-16 md:h-20">
-        <Link to="/" className="font-serif text-xl md:text-2xl font-bold text-ivory tracking-tight">
+        <Link to="/" onClick={handleLogoClick} className="font-serif text-xl md:text-2xl font-bold text-ivory tracking-tight">
           Punto y Aparte<span className="text-gold">.</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) =>
-            link.href.startsWith("/") && !link.href.startsWith("/#") ? (
+            link.href.startsWith("/") ? (
               <Link
                 key={link.href}
                 to={link.href}
@@ -59,7 +76,7 @@ const Header = () => {
                 key={link.href}
                 href={link.href}
                 onClick={(e) => {
-                  if (link.href.startsWith("/#") && location.pathname === "/") {
+                  if (link.href.startsWith("#")) {
                     e.preventDefault();
                     handleNav(link.href);
                   }
@@ -98,7 +115,7 @@ const Header = () => {
       {menuOpen && (
         <div className="md:hidden bg-background/95 backdrop-blur-md border-t border-border px-6 py-6 space-y-4">
           {navLinks.map((link) =>
-            link.href.startsWith("/") && !link.href.startsWith("/#") ? (
+            link.href.startsWith("/") ? (
               <Link
                 key={link.href}
                 to={link.href}
@@ -112,7 +129,7 @@ const Header = () => {
                 key={link.href}
                 href={link.href}
                 onClick={(e) => {
-                  if (link.href.startsWith("/#") && location.pathname === "/") {
+                  if (link.href.startsWith("#")) {
                     e.preventDefault();
                     handleNav(link.href);
                   } else {

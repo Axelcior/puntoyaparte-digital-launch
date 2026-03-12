@@ -8,19 +8,18 @@ const Hero = () => {
   const { openForm } = useLeadForm();
 
   return (
-    <section className="section-dark min-h-screen flex items-center pt-20 md:pt-0">
+    <section id="hero" className="section-dark min-h-screen flex items-center pt-20 md:pt-0 scroll-mt-24">
       <div className="container-section py-16 md:py-24">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="animate-fade-up">
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-ivory mb-6">
-              Tu web no está para verse bonita.{" "}
-              <span className="text-gold italic">Está para vender.</span>
+              Diseño web estratégico para negocios que necesitan vender online.
             </h1>
             <p className="text-lg md:text-xl text-foreground/70 mb-3 max-w-xl leading-relaxed">
-              Somos el punto de quiebre: cerramos la improvisación y abrimos estructura digital que convierte visitas en clientes.
+              Creamos landing pages, e-commerce Shopify y estructuras digitales diseñadas para convertir visitas en clientes.
             </p>
             <p className="text-sm text-foreground/50 mb-8 max-w-xl leading-relaxed">
-              Creamos páginas diseñadas para generar ventas reales, optimizadas para campañas de Meta Ads y construidas con procesos claros, tiempos definidos y resultados comprobados.
+              Tu web no debería ser solo una presentación. Debe ser una herramienta que genere clientes todos los días.
             </p>
             <div className="grid grid-cols-2 gap-3 mb-10">
               {bullets.map((b) => (
