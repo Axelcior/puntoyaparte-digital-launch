@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { LeadFormProvider } from "./components/LeadFormContext";
 import Index from "./pages/Index";
 import PortafolioPage from "./pages/PortafolioPage";
 import PorQueEscogernos from "./pages/PorQueEscogernos";
@@ -16,12 +17,14 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/portafolio" element={<PortafolioPage />} />
-          <Route path="/por-que-escogernos" element={<PorQueEscogernos />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <LeadFormProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/portafolio" element={<PortafolioPage />} />
+            <Route path="/por-que-escogernos" element={<PorQueEscogernos />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </LeadFormProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

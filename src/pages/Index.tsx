@@ -6,9 +6,9 @@ import ServiciosPlanesSection from "@/components/ServiciosPlanesSection";
 import GrowthAds from "@/components/GrowthAds";
 import CostoComparison from "@/components/CostoComparison";
 import FinalCTA from "@/components/FinalCTA";
-import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import LeadFormModal from "@/components/LeadFormModal";
 
 const Index = () => (
   <>
@@ -21,10 +21,10 @@ const Index = () => (
       <GrowthAds />
       <CostoComparison />
       <FinalCTA />
-      <LeadForm />
     </main>
     <Footer />
     <WhatsAppButton />
+    <LeadFormModal />
   </>
 );
 

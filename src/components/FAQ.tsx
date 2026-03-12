@@ -8,23 +8,27 @@ import {
 const faqs = [
   {
     q: "¿Cuánto tiempo toma el desarrollo?",
-    a: "Una landing page se entrega entre 2 y 3 semanas. Un e-commerce Shopify entre 3 y 4 semanas. Depende de la complejidad y la velocidad de entrega del contenido.",
+    a: "Generalmente entre 4 y 6 semanas, dependiendo de la complejidad del proyecto. Desde el inicio te damos un cronograma claro para que sepas cuándo recibir cada avance.",
+  },
+  {
+    q: "¿Qué pasa si necesito cambios durante el proceso?",
+    a: "Incluimos rondas de ajustes en cada etapa. Tu feedback es parte del flujo de trabajo, asegurando que el resultado final refleje exactamente lo que tu negocio necesita.",
+  },
+  {
+    q: "¿Cómo funciona la forma de pago?",
+    a: "50% al inicio del proyecto. 20% al presentar el demo funcional. 30% al entregar la página final, después de validar resultados con campañas de Meta Ads y tráfico real.",
+  },
+  {
+    q: "¿Qué soporte recibo después de la entrega?",
+    a: "Te damos acompañamiento inicial para asegurarnos de que la página funcione correctamente y esté lista para escalar campañas. También ofrecemos planes de mantenimiento opcionales.",
   },
   {
     q: "¿Necesito tener el contenido listo?",
     a: "Idealmente sí, pero te guiamos en el proceso. Ofrecemos copywriting persuasivo como parte del servicio para que tu mensaje sea claro y efectivo.",
   },
   {
-    q: "¿Qué pasa después de la entrega?",
-    a: "Te entregamos acceso completo a tu web, documentación básica y soporte post-lanzamiento durante 15 días. También ofrecemos planes de mantenimiento.",
-  },
-  {
     q: "Ya tengo una web, ¿pueden mejorarla?",
     a: "Sí. Hacemos auditorías gratuitas para identificar oportunidades de mejora. Si la estructura actual no sirve, te recomendamos rediseñar desde cero.",
-  },
-  {
-    q: "¿Qué necesito para empezar?",
-    a: "Solo una llamada de 15 minutos para entender tu negocio y objetivos. Nosotros nos encargamos del resto.",
   },
   {
     q: "¿La web funciona bien en móvil?",
@@ -32,11 +36,7 @@ const faqs = [
   },
   {
     q: "¿Qué plan me conviene?",
-    a: "Si necesitas captar leads o promocionar un servicio, una landing page es ideal. Si vendes productos físicos, un e-commerce en Shopify es la mejor opción.",
-  },
-  {
-    q: "¿Cómo es la forma de pago?",
-    a: "50% al iniciar el proyecto y 50% al momento de la entrega. Aceptamos transferencia bancaria y otros medios.",
+    a: "Si necesitas captar leads o promocionar un servicio, una landing page es ideal. Si vendes productos físicos, un e-commerce en Shopify es la mejor opción. Si buscas escalar, un funnel de conversión es lo tuyo.",
   },
 ];
 
