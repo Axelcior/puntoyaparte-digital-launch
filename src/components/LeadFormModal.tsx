@@ -59,20 +59,20 @@ const initialCommercial: CommercialForm = {
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const LeadFormModal = () => {
-  const { isOpen, modalType, selectedPlan, closeForm } = useLeadForm();
+  const { isOpen, formType, selectedPlan, closeForm } = useLeadForm();
   const [auditForm, setAuditForm] = useState<AuditForm>(initialAudit);
   const [commercialForm, setCommercialForm] = useState<CommercialForm>(initialCommercial);
   const [submitted, setSubmitted] = useState(false);
   const formId = useId();
 
   useEffect(() => {
-    if (!isOpen || modalType !== "commercial") return;
+    if (!isOpen || formType !== "commercial") return;
     if (!selectedPlan) return;
-    setCommercialForm((prev) => ({ ...prev, tipoProyecto: selectedPlan }));
-  }, [isOpen, modalType, selectedPlan]);
+    setCommercialForm((prev) => ({ ...prev, tipoProyecto: selectedPlan as ProjectType }));
+  }, [isOpen, formType, selectedPlan]);
 
   const validationMessage = useMemo(() => {
-    if (modalType === "audit") {
+    if (formType === "audit") {
       if (!auditForm.nombreCompleto || !auditForm.correo || !auditForm.whatsapp || !auditForm.empresa || !auditForm.urlSitio || !auditForm.objetivoSitio || !auditForm.presupuesto) {
         return "Completa todos los campos requeridos para continuar.";
       }
@@ -81,7 +81,7 @@ const LeadFormModal = () => {
       return "";
     }
 
-    if (modalType === "commercial") {
+    if (formType === "commercial") {
       if (!commercialForm.nombreCompleto || !commercialForm.correo || !commercialForm.whatsapp || !commercialForm.empresa || !commercialForm.tipoProyecto || !commercialForm.objetivoProyecto || !commercialForm.presupuesto) {
         return "Completa todos los campos requeridos para continuar.";
       }
@@ -90,7 +90,7 @@ const LeadFormModal = () => {
     }
 
     return "";
-  }, [auditForm, commercialForm, modalType]);
+  }, [auditForm, commercialForm, formType]);
 
   const handleClose = () => {
     closeForm();
@@ -103,7 +103,7 @@ const LeadFormModal = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!modalType) return;
+    if (!formType) return;
 
     if (validationMessage) {
       toast.error(validationMessage);
@@ -111,7 +111,7 @@ const LeadFormModal = () => {
     }
 
     const leads = JSON.parse(localStorage.getItem("pya_leads") || "[]");
-    const payload = modalType === "audit"
+    const payload = formType === "audit"
       ? { ...auditForm, formType: "audit" }
       : { ...commercialForm, formType: "commercial" };
 
@@ -126,8 +126,8 @@ const LeadFormModal = () => {
     "w-full bg-background border border-border/50 rounded-sm px-4 py-3 text-sm text-ivory placeholder:text-foreground/30 focus:outline-none focus:border-gold/60 focus:ring-2 focus:ring-gold/30 transition-colors";
   const labelClass = "block text-xs font-medium text-foreground/60 uppercase tracking-wider mb-2";
 
-  const title = modalType === "commercial" ? "Consulta de proyecto" : "Pedir una auditoría gratuita";
-  const description = modalType === "commercial"
+  const title = formType === "commercial" ? "Consulta de proyecto" : "Pedir una auditoría gratuita";
+  const description = formType === "commercial"
     ? "Cuéntanos sobre tu proyecto y te ayudamos a definir la mejor estrategia digital."
     : "Comparte tus datos y te enviamos un diagnóstico inicial accionable.";
 
@@ -168,13 +168,13 @@ const LeadFormModal = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-6 space-y-5" id={formId}>
-            {modalType === "commercial" && selectedPlan && (
+            {formType === "commercial" && selectedPlan && (
               <p className="text-sm text-gold bg-gold/10 border border-gold/30 rounded-sm px-3 py-2">
                 Plan seleccionado: <strong>{selectedPlan}</strong>
               </p>
             )}
 
-            {modalType === "audit" && (
+            {formType === "audit" && (
               <>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
@@ -220,7 +220,7 @@ const LeadFormModal = () => {
               </>
             )}
 
-            {modalType === "commercial" && (
+            {formType === "commercial" && (
               <>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>

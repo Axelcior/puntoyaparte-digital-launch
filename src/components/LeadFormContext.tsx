@@ -1,20 +1,20 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
-export type ModalType = "audit" | "commercial" | null;
+export type LeadFormType = "audit" | "commercial" | null;
 export type ProjectType = "Landing Page" | "E-commerce Shopify" | "Funnel de Conversión" | "Otro";
 
 interface LeadFormContextType {
   isOpen: boolean;
-  modalType: ModalType;
-  selectedPlan: ProjectType | null;
+  formType: LeadFormType;
+  selectedPlan: ProjectType | "" | null;
   openAuditForm: () => void;
-  openCommercialForm: (planName?: ProjectType) => void;
+  openCommercialForm: (planName?: ProjectType | "") => void;
   closeForm: () => void;
 }
 
 const LeadFormContext = createContext<LeadFormContextType>({
   isOpen: false,
-  modalType: null,
+  formType: null,
   selectedPlan: null,
   openAuditForm: () => {},
   openCommercialForm: () => {},
@@ -25,17 +25,17 @@ export const useLeadForm = () => useContext(LeadFormContext);
 
 export const LeadFormProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [modalType, setModalType] = useState<ModalType>(null);
-  const [selectedPlan, setSelectedPlan] = useState<ProjectType | null>(null);
+  const [formType, setFormType] = useState<LeadFormType>(null);
+  const [selectedPlan, setSelectedPlan] = useState<ProjectType | "" | null>(null);
 
   const openAuditForm = () => {
-    setModalType("audit");
+    setFormType("audit");
     setSelectedPlan(null);
     setIsOpen(true);
   };
 
-  const openCommercialForm = (planName?: ProjectType) => {
-    setModalType("commercial");
+  const openCommercialForm = (planName?: ProjectType | "") => {
+    setFormType("commercial");
     setSelectedPlan(planName ?? null);
     setIsOpen(true);
   };
@@ -46,7 +46,7 @@ export const LeadFormProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <LeadFormContext.Provider
-      value={{ isOpen, modalType, selectedPlan, openAuditForm, openCommercialForm, closeForm }}
+      value={{ isOpen, formType, selectedPlan, openAuditForm, openCommercialForm, closeForm }}
     >
       {children}
     </LeadFormContext.Provider>
