@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLeadForm } from "./LeadFormContext";
 
 const navLinks = [
-  { label: "Servicios", href: "/#servicios" },
+  { label: "Servicios", href: "#servicios" },
   { label: "Portafolio", href: "/portafolio" },
-  { label: "Proceso", href: "/#servicios" },
-  { label: "¿Por qué escogernos?", href: "/por-que-escogernos" },
+  { label: "¿Por qué escogernos?", href: "#por-que-escogernos" },
 ];
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
-  const { openForm } = useLeadForm();
+  const navigate = useNavigate();
+  const { openAuditForm } = useLeadForm();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -21,16 +21,21 @@ const Header = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleNav = (href: string) => {
+  const scrollToId = (id: string) => {
+    const el = document.getElementById(id);
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const handleAnchorNav = (href: string) => {
     setMenuOpen(false);
-    if (href.startsWith("/#")) {
-      if (location.pathname === "/") {
-        const el = document.querySelector(href.replace("/", ""));
-        el?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        window.location.href = href;
-      }
+    const id = href.replace("#", "");
+
+    if (location.pathname === "/") {
+      scrollToId(id);
+      return;
     }
+
+    navigate(`/#${id}`);
   };
 
   return (
@@ -40,13 +45,17 @@ const Header = () => {
       }`}
     >
       <div className="container-section flex items-center justify-between h-16 md:h-20">
-        <Link to="/" className="font-serif text-xl md:text-2xl font-bold text-ivory tracking-tight">
+        <button
+          type="button"
+          onClick={() => handleAnchorNav("#inicio")}
+          className="font-serif text-xl md:text-2xl font-bold text-ivory tracking-tight"
+        >
           Punto y Aparte<span className="text-gold">.</span>
-        </Link>
+        </button>
 
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) =>
-            link.href.startsWith("/") && !link.href.startsWith("/#") ? (
+            link.href.startsWith("/") ? (
               <Link
                 key={link.href}
                 to={link.href}
@@ -55,35 +64,26 @@ const Header = () => {
                 {link.label}
               </Link>
             ) : (
-              <a
+              <button
                 key={link.href}
-                href={link.href}
-                onClick={(e) => {
-                  if (link.href.startsWith("/#") && location.pathname === "/") {
-                    e.preventDefault();
-                    handleNav(link.href);
-                  }
-                }}
+                type="button"
+                onClick={() => handleAnchorNav(link.href)}
                 className="text-sm font-medium text-ivory/70 hover:text-gold transition-colors duration-200 tracking-wide uppercase"
               >
                 {link.label}
-              </a>
-            )
+              </button>
+            ),
           )}
         </nav>
 
         <div className="flex items-center gap-4">
           <button
-            onClick={openForm}
+            onClick={openAuditForm}
             className="hidden md:inline-flex items-center px-6 py-2.5 text-sm font-semibold bg-gold text-background rounded-sm hover:bg-gold-glow transition-colors duration-200 tracking-wide"
           >
             Auditoría Gratuita
           </button>
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden text-ivory p-2"
-            aria-label="Menú"
-          >
+          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-ivory p-2" aria-label="Menú">
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               {menuOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -98,7 +98,7 @@ const Header = () => {
       {menuOpen && (
         <div className="md:hidden bg-background/95 backdrop-blur-md border-t border-border px-6 py-6 space-y-4">
           {navLinks.map((link) =>
-            link.href.startsWith("/") && !link.href.startsWith("/#") ? (
+            link.href.startsWith("/") ? (
               <Link
                 key={link.href}
                 to={link.href}
@@ -108,25 +108,21 @@ const Header = () => {
                 {link.label}
               </Link>
             ) : (
-              <a
+              <button
                 key={link.href}
-                href={link.href}
-                onClick={(e) => {
-                  if (link.href.startsWith("/#") && location.pathname === "/") {
-                    e.preventDefault();
-                    handleNav(link.href);
-                  } else {
-                    setMenuOpen(false);
-                  }
-                }}
+                type="button"
+                onClick={() => handleAnchorNav(link.href)}
                 className="block text-sm font-medium text-ivory/70 hover:text-gold transition-colors uppercase tracking-wide"
               >
                 {link.label}
-              </a>
-            )
+              </button>
+            ),
           )}
           <button
-            onClick={() => { setMenuOpen(false); openForm(); }}
+            onClick={() => {
+              setMenuOpen(false);
+              openAuditForm();
+            }}
             className="block w-full text-center px-6 py-2.5 text-sm font-semibold bg-gold text-background rounded-sm"
           >
             Auditoría Gratuita

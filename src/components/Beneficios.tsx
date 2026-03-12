@@ -24,7 +24,7 @@ const benefits = [
 ];
 
 const Beneficios = () => (
-  <section className="section-dark py-20 md:py-28">
+  <section id="por-que-escogernos" className="section-dark py-20 md:py-28">
     <div className="container-section">
       <h2 className="font-serif text-3xl md:text-4xl font-bold text-center text-ivory mb-4">
         Lo que tu negocio necesita de su web

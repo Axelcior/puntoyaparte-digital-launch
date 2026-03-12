@@ -25,6 +25,7 @@ const plans = [
   {
     icon: Zap,
     name: "Plan Landing Page",
+    formValue: "Landing Page",
     subtitle: "Para negocios que necesitan convertir YA",
     price: "$1.800.000",
     currency: "COP",
@@ -42,6 +43,7 @@ const plans = [
   {
     icon: ShoppingCart,
     name: "Plan E-commerce",
+    formValue: "E-commerce Shopify",
     subtitle: "Para negocios que necesitan vender 24/7",
     price: "$3.800.000",
     currency: "COP",
@@ -59,6 +61,7 @@ const plans = [
   {
     icon: TrendingUp,
     name: "Plan Funnel de Conversión",
+    formValue: "Funnel de Conversión",
     subtitle: "Para negocios que buscan escalar",
     price: "Cotización personalizada",
     currency: "",
@@ -84,7 +87,7 @@ const steps = [
 ];
 
 const ServiciosPlanesSection = () => {
-  const { openForm } = useLeadForm();
+  const { openCommercialForm } = useLeadForm();
 
   return (
     <section id="servicios" className="section-ivory py-20 md:py-28">
@@ -108,8 +111,8 @@ const ServiciosPlanesSection = () => {
                   </li>
                 ))}
               </ul>
-              <button onClick={openForm} className="text-gold text-sm font-semibold hover:underline tracking-wide text-left">
-                Consultar →
+              <button onClick={() => openCommercialForm()} className="text-gold text-sm font-semibold hover:underline tracking-wide text-left">
+                Consultar proyecto →
               </button>
             </div>
           ))}
@@ -167,14 +170,14 @@ const ServiciosPlanesSection = () => {
                 </div>
 
                 <button
-                  onClick={openForm}
+                  onClick={() => openCommercialForm(plan.formValue)}
                   className={`block text-center py-3 rounded-sm text-sm font-semibold tracking-wide transition-colors duration-200 ${
                     plan.featured
                       ? "bg-gold text-background hover:bg-gold-glow"
                       : "border border-gold/40 text-gold hover:bg-gold/10"
                   }`}
                 >
-                  Solicitar propuesta
+                  Consultar proyecto
                 </button>
               </div>
             ))}
