@@ -16,7 +16,7 @@ const compareData = [
 ];
 
 const Problema = () => {
-  const { openForm } = useLeadForm();
+  const { openAuditForm } = useLeadForm();
 
   return (
     <section className="section-ivory py-20 md:py-28">
@@ -66,7 +66,7 @@ const Problema = () => {
         </div>
         
         <div className="text-center mt-12">
-          <button onClick={() => openForm()} className="text-gold font-semibold hover:underline text-sm tracking-wide uppercase">
+          <button onClick={() => openAuditForm()} className="text-gold font-semibold hover:underline text-sm tracking-wide uppercase">
             Quiero revisar mi web →
           </button>
         </div>

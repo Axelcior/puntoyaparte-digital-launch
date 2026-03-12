@@ -1,5 +1,6 @@
 import { Check, Search, LayoutGrid, Code, Rocket, Zap, ShoppingCart, TrendingUp } from "lucide-react";
 import { useLeadForm } from "./LeadFormContext";
+import type { ProjectType } from "./LeadFormContext";
 
 /* ── Servicios ── */
 const services = [
@@ -21,7 +22,18 @@ const services = [
 ];
 
 /* ── Planes ── */
-const plans = [
+const plans: Array<{
+  icon: typeof Zap;
+  name: string;
+  subtitle: string;
+  price: string;
+  currency: string;
+  featured: boolean;
+  timeline: string;
+  result: string;
+  formValue: ProjectType;
+  extras: string[];
+}> = [
   {
     icon: Zap,
     name: "Plan Landing Page",
@@ -49,7 +61,7 @@ const plans = [
     featured: true,
     timeline: "Entrega en 15–20 días",
     result: "Tienda lista para escalar ventas con pauta.",
-    formValue: "E-commerce",
+    formValue: "E-commerce Shopify",
     extras: [
       "Catálogo completo, variaciones y pasarelas de pago",
       "Arquitectura de conversión para aumentar ticket promedio",
@@ -87,7 +99,7 @@ const steps = [
 ];
 
 const ServiciosPlanesSection = () => {
-  const { openForm } = useLeadForm();
+  const { openCommercialForm } = useLeadForm();
 
   return (
     <section id="servicios" className="section-ivory py-20 md:py-28 scroll-mt-24">
@@ -111,7 +123,7 @@ const ServiciosPlanesSection = () => {
                   </li>
                 ))}
               </ul>
-              <button onClick={() => openForm()} className="text-gold text-sm font-semibold hover:underline tracking-wide text-left">
+              <button onClick={() => openCommercialForm()} className="text-gold text-sm font-semibold hover:underline tracking-wide text-left">
                 Consultar →
               </button>
             </div>
@@ -170,7 +182,7 @@ const ServiciosPlanesSection = () => {
                 </div>
 
                 <button
-                  onClick={() => openForm(plan.formValue)}
+                  onClick={() => openCommercialForm(plan.formValue)}
                   className={`block text-center py-3 rounded-sm text-sm font-semibold tracking-wide transition-colors duration-200 ${
                     plan.featured
                       ? "bg-gold text-background hover:bg-gold-glow"

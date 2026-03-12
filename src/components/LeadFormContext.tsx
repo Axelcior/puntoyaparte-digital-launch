@@ -1,16 +1,23 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
+export type ModalType = "audit" | "commercial" | null;
+export type ProjectType = "Landing Page" | "E-commerce Shopify" | "Funnel de Conversión" | "Otro";
+
 interface LeadFormContextType {
   isOpen: boolean;
-  selectedPlan: string;
-  openForm: (planName?: string) => void;
+  modalType: ModalType;
+  selectedPlan: ProjectType | null;
+  openAuditForm: () => void;
+  openCommercialForm: (planName?: ProjectType) => void;
   closeForm: () => void;
 }
 
 const LeadFormContext = createContext<LeadFormContextType>({
   isOpen: false,
-  selectedPlan: "",
-  openForm: () => {},
+  modalType: null,
+  selectedPlan: null,
+  openAuditForm: () => {},
+  openCommercialForm: () => {},
   closeForm: () => {},
 });
 
@@ -18,10 +25,18 @@ export const useLeadForm = () => useContext(LeadFormContext);
 
 export const LeadFormProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState("");
+  const [modalType, setModalType] = useState<ModalType>(null);
+  const [selectedPlan, setSelectedPlan] = useState<ProjectType | null>(null);
 
-  const openForm = (planName?: string) => {
-    setSelectedPlan(planName ?? "");
+  const openAuditForm = () => {
+    setModalType("audit");
+    setSelectedPlan(null);
+    setIsOpen(true);
+  };
+
+  const openCommercialForm = (planName?: ProjectType) => {
+    setModalType("commercial");
+    setSelectedPlan(planName ?? null);
     setIsOpen(true);
   };
 
@@ -30,7 +45,9 @@ export const LeadFormProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <LeadFormContext.Provider value={{ isOpen, selectedPlan, openForm, closeForm }}>
+    <LeadFormContext.Provider
+      value={{ isOpen, modalType, selectedPlan, openAuditForm, openCommercialForm, closeForm }}
+    >
       {children}
     </LeadFormContext.Provider>
   );

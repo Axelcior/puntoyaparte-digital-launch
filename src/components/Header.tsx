@@ -13,7 +13,7 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { openForm } = useLeadForm();
+  const { openAuditForm } = useLeadForm();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -91,7 +91,7 @@ const Header = () => {
 
         <div className="flex items-center gap-4">
           <button
-            onClick={openForm}
+            onClick={openAuditForm}
             className="hidden md:inline-flex items-center px-6 py-2.5 text-sm font-semibold bg-gold text-background rounded-sm hover:bg-gold-glow transition-colors duration-200 tracking-wide"
           >
             Auditoría Gratuita
@@ -143,7 +143,7 @@ const Header = () => {
             )
           )}
           <button
-            onClick={() => { setMenuOpen(false); openForm(); }}
+            onClick={() => { setMenuOpen(false); openAuditForm(); }}
             className="block w-full text-center px-6 py-2.5 text-sm font-semibold bg-gold text-background rounded-sm"
           >
             Auditoría Gratuita
