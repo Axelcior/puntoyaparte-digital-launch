@@ -8,7 +8,7 @@ const pillars = [
 
 
 const Confianza = () =>
-<section className="section-dark py-20 md:py-28">
+<section id="por-que-escogernos" className="section-dark py-20 md:py-28">
     <div className="container-section">
       {/* Misión */}
       <div className="max-w-3xl mx-auto text-center mb-20">

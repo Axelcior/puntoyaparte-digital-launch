@@ -5,10 +5,10 @@ const bullets = ["Claridad", "Confianza", "Conversión", "Listo para pauta"];
 const chips = ["Optimizado", "Medible", "Listo para escalar"];
 
 const Hero = () => {
-  const { openForm } = useLeadForm();
+  const { openCommercialForm, openAuditForm } = useLeadForm();
 
   return (
-    <section className="section-dark min-h-screen flex items-center pt-20 md:pt-0">
+    <section id="inicio" className="section-dark min-h-screen flex items-center pt-20 md:pt-0">
       <div className="container-section py-16 md:py-24">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="animate-fade-up">
@@ -32,13 +32,13 @@ const Hero = () => {
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <button
-                onClick={openForm}
+                onClick={openCommercialForm}
                 className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-semibold bg-gold text-background rounded-sm hover:bg-gold-glow transition-colors duration-200 tracking-wide"
               >
                 Agendar llamada estratégica (15 min)
               </button>
               <button
-                onClick={openForm}
+                onClick={openAuditForm}
                 className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-semibold border border-gold/40 text-gold rounded-sm hover:bg-gold/10 transition-colors duration-200 tracking-wide"
               >
                 Pedir auditoría gratuita

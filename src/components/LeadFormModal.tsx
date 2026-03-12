@@ -1,56 +1,104 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { useLeadForm } from "./LeadFormContext";
 import { X } from "lucide-react";
 
-interface Lead {
-  nombre: string;
-  empresa: string;
-  whatsapp: string;
+type FormType = "audit" | "commercial";
+
+interface AuditLead {
+  fullName: string;
   email: string;
-  tipo: string;
-  presupuesto: string;
-  mensaje: string;
+  whatsapp: string;
+  company: string;
+  websiteUrl: string;
+  websiteGoal: string;
+  budget: string;
 }
 
-const initial: Lead = {
-  nombre: "",
-  empresa: "",
-  whatsapp: "",
+interface CommercialLead {
+  fullName: string;
+  email: string;
+  whatsapp: string;
+  company: string;
+  projectType: string;
+  projectGoal: string;
+  budget: string;
+}
+
+const auditInitial: AuditLead = {
+  fullName: "",
   email: "",
-  tipo: "",
-  presupuesto: "",
-  mensaje: "",
+  whatsapp: "",
+  company: "",
+  websiteUrl: "",
+  websiteGoal: "",
+  budget: "",
 };
 
+const commercialInitial: CommercialLead = {
+  fullName: "",
+  email: "",
+  whatsapp: "",
+  company: "",
+  projectType: "",
+  projectGoal: "",
+  budget: "",
+};
+
+const auditBudgets = [
+  "$600.000 - $900.000 COP",
+  "$900.000 - $1.200.000 COP",
+  "$1.200.000 - $1.500.000 COP",
+  "$1.500.000 - $1.800.000 COP",
+  "$1.800.000 - $2.000.000 COP",
+];
+
+const commercialProjectTypes = ["Landing Page", "E-commerce Shopify", "Funnel de Conversión", "Otro"];
+
+const commercialBudgets = [...auditBudgets, "Más de $2.000.000 COP"];
+
 const LeadFormModal = () => {
-  const { isOpen, closeForm } = useLeadForm();
-  const [form, setForm] = useState<Lead>(initial);
+  const { isOpen, formType, selectedPlan, closeForm } = useLeadForm();
+  const [auditForm, setAuditForm] = useState<AuditLead>(auditInitial);
+  const [commercialForm, setCommercialForm] = useState<CommercialLead>(commercialInitial);
   const [submitted, setSubmitted] = useState(false);
 
-  const update = (field: keyof Lead, value: string) =>
-    setForm((prev) => ({ ...prev, [field]: value }));
+  useEffect(() => {
+    if (formType !== "commercial") return;
+    setCommercialForm((prev) => ({ ...prev, projectType: selectedPlan ?? prev.projectType }));
+  }, [formType, selectedPlan]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.nombre || !form.email) {
-      toast.error("Por favor completa al menos tu nombre y email.");
-      return;
-    }
-    const leads = JSON.parse(localStorage.getItem("pya_leads") || "[]");
-    leads.push({ ...form, created_at: new Date().toISOString() });
-    localStorage.setItem("pya_leads", JSON.stringify(leads));
-    setSubmitted(true);
-    toast.success("¡Recibimos tu solicitud! Te contactaremos pronto.");
+  const formTitle = useMemo(() => {
+    if (submitted) return "¡Listo!";
+    return formType === "audit" ? "Auditoría gratuita" : "Consulta de proyecto";
+  }, [formType, submitted]);
+
+  const resetState = () => {
+    setSubmitted(false);
+    setAuditForm(auditInitial);
+    setCommercialForm(commercialInitial);
   };
 
   const handleClose = () => {
     closeForm();
-    setTimeout(() => {
-      setSubmitted(false);
-      setForm(initial);
-    }, 300);
+    setTimeout(resetState, 250);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const leads = JSON.parse(localStorage.getItem("pya_leads") || "[]");
+    const payload =
+      formType === "audit"
+        ? { formType: "audit", ...auditForm }
+        : { formType: "commercial", ...commercialForm };
+
+    leads.push({ ...payload, createdAt: new Date().toISOString() });
+    localStorage.setItem("pya_leads", JSON.stringify(leads));
+
+    setSubmitted(true);
+    toast.success("¡Recibimos tu solicitud! Te contactaremos pronto.");
   };
 
   const inputClass =
@@ -59,12 +107,25 @@ const LeadFormModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="bg-dark-surface border-border/30 max-w-lg p-0 gap-0 overflow-hidden [&>button]:hidden">
+      <DialogContent
+        aria-modal="true"
+        className="bg-dark-surface border-border/30 max-w-xl p-0 gap-0 overflow-hidden [&>button]:hidden"
+      >
         <div className="flex items-center justify-between px-6 pt-6 pb-0">
-          <DialogTitle className="font-serif text-xl font-bold text-ivory">
-            {submitted ? "¡Listo!" : "Hablemos de tu proyecto"}
-          </DialogTitle>
-          <button onClick={handleClose} className="text-foreground/40 hover:text-ivory transition-colors">
+          <div>
+            <DialogTitle className="font-serif text-xl font-bold text-ivory">{formTitle}</DialogTitle>
+            <DialogDescription className="text-sm text-foreground/50 mt-1">
+              {submitted
+                ? "Recibimos tu solicitud correctamente."
+                : "Completa el formulario y te contactamos en menos de 24 horas."}
+            </DialogDescription>
+          </div>
+          <button
+            type="button"
+            aria-label="Cerrar formulario"
+            onClick={handleClose}
+            className="text-foreground/40 hover:text-ivory transition-colors"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -75,9 +136,10 @@ const LeadFormModal = () => {
               <span className="text-2xl text-gold">✓</span>
             </div>
             <p className="text-foreground/60 mb-6">
-              Recibimos tu solicitud. Un miembro del equipo te contactará en las próximas 24 horas.
+              Un miembro del equipo te contactará en las próximas 24 horas.
             </p>
             <button
+              type="button"
               onClick={handleClose}
               className="px-8 py-3 text-sm font-semibold bg-gold text-background rounded-sm hover:bg-gold-glow transition-colors"
             >
@@ -86,57 +148,74 @@ const LeadFormModal = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-6 space-y-5">
-            <p className="text-sm text-foreground/50 -mt-2">
-              Completa el formulario y te contactamos en menos de 24 horas.
-            </p>
-
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className={labelClass}>Nombre *</label>
-                <input type="text" value={form.nombre} onChange={(e) => update("nombre", e.target.value)} placeholder="Tu nombre" className={inputClass} required />
+                <label htmlFor="fullName" className={labelClass}>Nombre completo *</label>
+                <input id="fullName" type="text" value={formType === "audit" ? auditForm.fullName : commercialForm.fullName} onChange={(e) => formType === "audit" ? setAuditForm((prev) => ({ ...prev, fullName: e.target.value })) : setCommercialForm((prev) => ({ ...prev, fullName: e.target.value }))} className={inputClass} required />
               </div>
               <div>
-                <label className={labelClass}>Empresa</label>
-                <input type="text" value={form.empresa} onChange={(e) => update("empresa", e.target.value)} placeholder="Tu empresa" className={inputClass} />
+                <label htmlFor="email" className={labelClass}>Correo electrónico *</label>
+                <input id="email" type="email" value={formType === "audit" ? auditForm.email : commercialForm.email} onChange={(e) => formType === "audit" ? setAuditForm((prev) => ({ ...prev, email: e.target.value })) : setCommercialForm((prev) => ({ ...prev, email: e.target.value }))} className={inputClass} required />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className={labelClass}>WhatsApp</label>
-                <input type="tel" value={form.whatsapp} onChange={(e) => update("whatsapp", e.target.value)} placeholder="+57 300 000 0000" className={inputClass} />
+                <label htmlFor="whatsapp" className={labelClass}>WhatsApp *</label>
+                <input id="whatsapp" type="tel" value={formType === "audit" ? auditForm.whatsapp : commercialForm.whatsapp} onChange={(e) => formType === "audit" ? setAuditForm((prev) => ({ ...prev, whatsapp: e.target.value })) : setCommercialForm((prev) => ({ ...prev, whatsapp: e.target.value }))} className={inputClass} required />
               </div>
               <div>
-                <label className={labelClass}>Email *</label>
-                <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} placeholder="tu@email.com" className={inputClass} required />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className={labelClass}>Tipo de proyecto</label>
-                <select value={form.tipo} onChange={(e) => update("tipo", e.target.value)} className={inputClass}>
-                  <option value="">Seleccionar...</option>
-                  <option value="landing">Landing Page</option>
-                  <option value="ecommerce">E-commerce Shopify</option>
-                  <option value="funnel">Funnel de Conversión</option>
-                </select>
-              </div>
-              <div>
-                <label className={labelClass}>Presupuesto</label>
-                <select value={form.presupuesto} onChange={(e) => update("presupuesto", e.target.value)} className={inputClass}>
-                  <option value="">Seleccionar rango...</option>
-                  <option value="1-2m">$1.000.000 - $2.000.000 COP</option>
-                  <option value="2-4m">$2.000.000 - $4.000.000 COP</option>
-                  <option value="4m+">$4.000.000+ COP</option>
-                </select>
+                <label htmlFor="company" className={labelClass}>Empresa *</label>
+                <input id="company" type="text" value={formType === "audit" ? auditForm.company : commercialForm.company} onChange={(e) => formType === "audit" ? setAuditForm((prev) => ({ ...prev, company: e.target.value })) : setCommercialForm((prev) => ({ ...prev, company: e.target.value }))} className={inputClass} required />
               </div>
             </div>
 
-            <div>
-              <label className={labelClass}>Mensaje</label>
-              <textarea value={form.mensaje} onChange={(e) => update("mensaje", e.target.value)} placeholder="Cuéntanos sobre tu proyecto..." rows={3} className={inputClass + " resize-none"} />
-            </div>
+            {formType === "audit" ? (
+              <>
+                <div>
+                  <label htmlFor="websiteUrl" className={labelClass}>URL del sitio *</label>
+                  <input id="websiteUrl" type="url" value={auditForm.websiteUrl} onChange={(e) => setAuditForm((prev) => ({ ...prev, websiteUrl: e.target.value }))} placeholder="https://tusitio.com" className={inputClass} required />
+                </div>
+                <div>
+                  <label htmlFor="websiteGoal" className={labelClass}>Objetivo del sitio *</label>
+                  <textarea id="websiteGoal" value={auditForm.websiteGoal} onChange={(e) => setAuditForm((prev) => ({ ...prev, websiteGoal: e.target.value }))} rows={3} className={`${inputClass} resize-none`} required />
+                </div>
+                <div>
+                  <label htmlFor="auditBudget" className={labelClass}>Presupuesto estimado *</label>
+                  <select id="auditBudget" value={auditForm.budget} onChange={(e) => setAuditForm((prev) => ({ ...prev, budget: e.target.value }))} className={inputClass} required>
+                    <option value="">Seleccionar...</option>
+                    {auditBudgets.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <label htmlFor="projectType" className={labelClass}>Tipo de proyecto *</label>
+                  <select id="projectType" value={commercialForm.projectType} onChange={(e) => setCommercialForm((prev) => ({ ...prev, projectType: e.target.value }))} className={inputClass} required>
+                    <option value="">Seleccionar...</option>
+                    {commercialProjectTypes.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="projectGoal" className={labelClass}>Objetivo del proyecto *</label>
+                  <textarea id="projectGoal" value={commercialForm.projectGoal} onChange={(e) => setCommercialForm((prev) => ({ ...prev, projectGoal: e.target.value }))} rows={3} className={`${inputClass} resize-none`} required />
+                </div>
+                <div>
+                  <label htmlFor="commercialBudget" className={labelClass}>Presupuesto estimado *</label>
+                  <select id="commercialBudget" value={commercialForm.budget} onChange={(e) => setCommercialForm((prev) => ({ ...prev, budget: e.target.value }))} className={inputClass} required>
+                    <option value="">Seleccionar...</option>
+                    {commercialBudgets.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
 
             <button type="submit" className="w-full py-3.5 text-sm font-semibold bg-gold text-background rounded-sm hover:bg-gold-glow transition-colors duration-200 tracking-wide">
               Enviar solicitud

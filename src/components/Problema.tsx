@@ -1,3 +1,5 @@
+import { useLeadForm } from "./LeadFormContext";
+
 const problems = [
   { icon: "⏱", title: "Web lenta", desc: "Tus visitantes se van antes de ver tu oferta." },
   { icon: "💬", title: "Mensaje confuso", desc: "No saben qué haces ni por qué elegirte." },
@@ -13,62 +15,70 @@ const compareData = [
   { improv: "Pierde dinero en pauta sin resultados", structured: "Cada peso invertido es medible" },
 ];
 
-const Problema = () => (
-  <section className="section-ivory py-20 md:py-28">
-    <div className="container-section">
-      <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 leading-tight">
-        Si tu web no te genera clientes,
-        <br />
-        <span className="text-gold">tienes un problema de estructura.</span>
-      </h2>
-      <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-14 text-lg" style={{ color: "hsl(var(--ivory-foreground) / 0.6)" }}>
-        Estos son los síntomas más comunes.
-      </p>
+const Problema = () => {
+  const { openAuditForm } = useLeadForm();
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
-        {problems.map((p) => (
-          <div
-            key={p.title}
-            className="bg-background rounded-sm p-6 border border-gold/20 hover:border-gold/50 transition-colors duration-300"
-          >
-            <span className="text-2xl mb-3 block">{p.icon}</span>
-            <h3 className="font-serif text-lg font-semibold text-ivory mb-2">{p.title}</h3>
-            <p className="text-sm text-foreground/60">{p.desc}</p>
-          </div>
-        ))}
-      </div>
+  return (
+    <section className="section-ivory py-20 md:py-28">
+      <div className="container-section">
+        <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 leading-tight">
+          Si tu web no te genera clientes,
+          <br />
+          <span className="text-gold">tienes un problema de estructura.</span>
+        </h2>
+        <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-14 text-lg" style={{ color: "hsl(var(--ivory-foreground) / 0.6)" }}>
+          Estos son los síntomas más comunes.
+        </p>
 
-      <div className="max-w-3xl mx-auto">
-        <h3 className="font-serif text-2xl font-bold text-center mb-8">
-          Negocio improvisado <span className="text-gold">vs</span> Negocio estructurado
-        </h3>
-        <div className="grid md:grid-cols-2 gap-4">
-          <div className="bg-background rounded-sm p-6 border border-border/30">
-            <h4 className="font-semibold text-foreground/50 text-sm uppercase tracking-wider mb-4">❌ Sin estructura</h4>
-            {compareData.map((c, i) => (
-              <p key={i} className="text-sm text-foreground/60 mb-2 flex items-start gap-2">
-                <span className="text-foreground/30 mt-0.5">—</span> {c.improv}
-              </p>
-            ))}
-          </div>
-          <div className="bg-gold/10 rounded-sm p-6 border border-gold/30">
-            <h4 className="font-semibold text-gold text-sm uppercase tracking-wider mb-4">✓ Con estructura</h4>
-            {compareData.map((c, i) => (
-              <p key={i} className="text-sm mb-2 flex items-start gap-2" style={{ color: "hsl(var(--ivory-foreground))" }}>
-                <span className="text-gold mt-0.5">✓</span> {c.structured}
-              </p>
-            ))}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
+          {problems.map((p) => (
+            <div
+              key={p.title}
+              className="bg-background rounded-sm p-6 border border-gold/20 hover:border-gold/50 transition-colors duration-300"
+            >
+              <span className="text-2xl mb-3 block">{p.icon}</span>
+              <h3 className="font-serif text-lg font-semibold text-ivory mb-2">{p.title}</h3>
+              <p className="text-sm text-foreground/60">{p.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="max-w-3xl mx-auto">
+          <h3 className="font-serif text-2xl font-bold text-center mb-8">
+            Negocio improvisado <span className="text-gold">vs</span> Negocio estructurado
+          </h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-background rounded-sm p-6 border border-border/30">
+              <h4 className="font-semibold text-foreground/50 text-sm uppercase tracking-wider mb-4">❌ Sin estructura</h4>
+              {compareData.map((c, i) => (
+                <p key={i} className="text-sm text-foreground/60 mb-2 flex items-start gap-2">
+                  <span className="text-foreground/30 mt-0.5">—</span> {c.improv}
+                </p>
+              ))}
+            </div>
+            <div className="bg-gold/10 rounded-sm p-6 border border-gold/30">
+              <h4 className="font-semibold text-gold text-sm uppercase tracking-wider mb-4">✓ Con estructura</h4>
+              {compareData.map((c, i) => (
+                <p key={i} className="text-sm mb-2 flex items-start gap-2" style={{ color: "hsl(var(--ivory-foreground))" }}>
+                  <span className="text-gold mt-0.5">✓</span> {c.structured}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="text-center mt-12">
-        <a href="#contacto" className="text-gold font-semibold hover:underline text-sm tracking-wide uppercase">
-          Quiero revisar mi web →
-        </a>
+        <div className="text-center mt-12">
+          <button
+            type="button"
+            onClick={openAuditForm}
+            className="text-gold font-semibold hover:underline text-sm tracking-wide uppercase"
+          >
+            Quiero revisar mi web →
+          </button>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default Problema;
