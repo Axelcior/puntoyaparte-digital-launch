@@ -1,20 +1,35 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const navLinks = [
-  { label: "Servicios", href: "#servicios" },
-  { label: "Portafolio", href: "#portafolio" },
-  { label: "Proceso", href: "#proceso" },
+  { label: "Servicios", href: "/#servicios" },
+  { label: "Portafolio", href: "/portafolio" },
+  { label: "Proceso", href: "/#servicios" },
+  { label: "¿Por qué escogernos?", href: "/por-que-escogernos" },
 ];
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const handleNav = (href: string) => {
+    setMenuOpen(false);
+    if (href.startsWith("/#")) {
+      if (location.pathname === "/") {
+        const el = document.querySelector(href.replace("/", ""));
+        el?.scrollIntoView({ behavior: "smooth" });
+      } else {
+        window.location.href = href;
+      }
+    }
+  };
 
   return (
     <header
@@ -23,20 +38,36 @@ const Header = () => {
       }`}
     >
       <div className="container-section flex items-center justify-between h-16 md:h-20">
-        <a href="#" className="font-serif text-xl md:text-2xl font-bold text-ivory tracking-tight">
+        <Link to="/" className="font-serif text-xl md:text-2xl font-bold text-ivory tracking-tight">
           Punto y Aparte<span className="text-gold">.</span>
-        </a>
+        </Link>
 
         <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-ivory/70 hover:text-gold transition-colors duration-200 tracking-wide uppercase"
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.href.startsWith("/") && !link.href.startsWith("/#") ? (
+              <Link
+                key={link.href}
+                to={link.href}
+                className="text-sm font-medium text-ivory/70 hover:text-gold transition-colors duration-200 tracking-wide uppercase"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={(e) => {
+                  if (link.href.startsWith("/#") && location.pathname === "/") {
+                    e.preventDefault();
+                    handleNav(link.href);
+                  }
+                }}
+                className="text-sm font-medium text-ivory/70 hover:text-gold transition-colors duration-200 tracking-wide uppercase"
+              >
+                {link.label}
+              </a>
+            )
+          )}
         </nav>
 
         <div className="flex items-center gap-4">
@@ -64,16 +95,34 @@ const Header = () => {
 
       {menuOpen && (
         <div className="md:hidden bg-background/95 backdrop-blur-md border-t border-border px-6 py-6 space-y-4">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className="block text-sm font-medium text-ivory/70 hover:text-gold transition-colors uppercase tracking-wide"
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.href.startsWith("/") && !link.href.startsWith("/#") ? (
+              <Link
+                key={link.href}
+                to={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="block text-sm font-medium text-ivory/70 hover:text-gold transition-colors uppercase tracking-wide"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={(e) => {
+                  if (link.href.startsWith("/#") && location.pathname === "/") {
+                    e.preventDefault();
+                    handleNav(link.href);
+                  } else {
+                    setMenuOpen(false);
+                  }
+                }}
+                className="block text-sm font-medium text-ivory/70 hover:text-gold transition-colors uppercase tracking-wide"
+              >
+                {link.label}
+              </a>
+            )
+          )}
           <a
             href="#contacto"
             onClick={() => setMenuOpen(false)}
