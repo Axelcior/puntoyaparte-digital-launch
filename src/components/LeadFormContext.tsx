@@ -6,9 +6,9 @@ export type ProjectType = "Landing Page" | "E-commerce Shopify" | "Funnel de Con
 interface LeadFormContextType {
   isOpen: boolean;
   formType: LeadFormType;
-  selectedPlan: ProjectType | "" | null;
+  selectedPlan: string | null;
   openAuditForm: () => void;
-  openCommercialForm: (planName?: ProjectType | "") => void;
+  openCommercialForm: (planName?: string) => void;
   closeForm: () => void;
 }
 
@@ -26,7 +26,7 @@ export const useLeadForm = () => useContext(LeadFormContext);
 export const LeadFormProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [formType, setFormType] = useState<LeadFormType>(null);
-  const [selectedPlan, setSelectedPlan] = useState<ProjectType | "" | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
   const openAuditForm = () => {
     setFormType("audit");
@@ -34,7 +34,7 @@ export const LeadFormProvider = ({ children }: { children: ReactNode }) => {
     setIsOpen(true);
   };
 
-  const openCommercialForm = (planName?: ProjectType | "") => {
+  const openCommercialForm = (planName?: string) => {
     setFormType("commercial");
     setSelectedPlan(planName ?? null);
     setIsOpen(true);
